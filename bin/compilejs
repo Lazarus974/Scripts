@@ -1,0 +1,39 @@
+#!/bin/bash
+
+COMMAND=$(which uglifyjs)
+CRC32=$(which crc32)
+FILES=""
+
+(($# < 1)) && echo "Usage : compilejs file1 [file2 [file3 ...]]" && exit 0
+
+if [ ! -x $CRC32 ] ; then
+	echo "Command crc32 not found" && exit 1
+fi
+
+if [ ! -x $COMMAND ] ; then
+	echo "Command uglify not found" && exit 2
+fi
+
+declare -A CRC
+for file in $* ; do
+	if [ ! -f $file ] ; then
+		echo "File $file not found" && exit 3
+	fi
+	CRC[$file]=""
+done
+
+
+while [ 1 ] ; do
+	for file in $* ; do
+		DIR=$(dirname $file)
+		NAME=$(basename $file)
+		DSTNAME=$(echo $NAME|cut -d'.' -f1)
+		FCRC=$($CRC32 "$file")
+		if [ "$FCRC" != "${CRC[$file]}" ] ; then
+			uglifyjs $file > "$DIR/$DSTNAME.min.js"
+			echo "Updated file $NAME at "$(date +%H:%M:%S)
+		fi
+		CRC[$file]=$FCRC
+	done
+	sleep 1
+done
