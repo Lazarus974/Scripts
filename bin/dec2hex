@@ -1,0 +1,8 @@
+#!/usr/bin/php
+<?php
+
+for($i = 1; $i < $_SERVER['argc']+1; $i++)
+	if(isset($_SERVER['argv'][$i]))
+		echo dechex($_SERVER['argv'][$i])." ";
+echo "\n";
+exit(0);

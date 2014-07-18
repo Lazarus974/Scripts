@@ -1,0 +1,25 @@
+#!/usr/bin/php
+<?php
+
+if(PHP_SAPI != "cli")
+	die(nl2br("This script should be ran in CLI.\n"));
+
+$length = $argc > 1 ? (int) $argv[1] : 8;
+$quite = $argc > 2;
+
+function generate($count = 8) {
+	$res = "";
+	for($i = 0; $i < $count; $i++) {
+		$randchar = rand(0x16, 0x53);
+		if($randchar > 0x39)
+			$randchar = chr($randchar + 7);
+		elseif($randchar < 0x30)
+			$randchar = strtolower(chr($randchar + 43));
+		else
+			$randchar = chr($randchar);
+		$res .= $randchar;
+	}
+	return $res;
+}
+
+echo $quite ? generate($length) : "Generated password: ".generate($length)."\n";

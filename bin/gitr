@@ -1,0 +1,25 @@
+#!/bin/bash
+
+COMMAND=""
+
+# Analyzing command
+case "$1" in
+"stat" | "status")
+	COMMAND="status"
+	;;
+"pull")
+	COMMAND="pull"
+	;;
+*)
+	echo "Git command not supported"
+	exit 0
+esac
+
+# Executing command recursively
+for dir in $(ls -1) ; do
+	cd $dir
+	echo "----- EXECUTING \"git $COMMAND\" IN DIRECTORY \"$dir\""
+	git $COMMAND
+	cd - >/dev/null
+	echo ""
+done

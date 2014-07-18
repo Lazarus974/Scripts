@@ -1,0 +1,12 @@
+#!/usr/bin/php
+<?php
+
+$arg = $_SERVER['argv'][1];
+
+if(file_exists($arg))
+	$content = file_get_contents($arg);
+else
+	$content = $arg;
+
+$serial = unserialize($content);
+var_dump($serial);
