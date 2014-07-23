@@ -1,9 +1,23 @@
 #!/bin/bash
 
 COMMAND=""
+CMD=$1
+DIRECTORIES=$(ls -1)
+
+if [ $# -lt 1 ] ; then
+	echo "Usage: gitr <command>"
+	echo "Supported commands : status,pull"
+	exit 0
+fi
+
+shift
+
+if [ $# -gt 0 ] ; then
+	DIRECTORIES=$*
+fi
 
 # Analyzing command
-case "$1" in
+case "$CMD" in
 "stat" | "status")
 	COMMAND="status"
 	;;
@@ -16,10 +30,18 @@ case "$1" in
 esac
 
 # Executing command recursively
-for dir in $(ls -1) ; do
+I=0
+for dir in $DIRECTORIES ; do
+	if [[ $I -gt 0 ]] ; then
+		echo -e "\n\e[1m--------------------------------------------------\e[0m"
+	fi
 	cd $dir
-	echo "----- EXECUTING \"git $COMMAND\" IN DIRECTORY \"$dir\""
-	git $COMMAND
+	if [ -d ".git" ] ; then
+		echo -e "\e[1m$dir\e[0m: \e[92mgit $COMMAND\e[0m"
+		git $COMMAND
+	else
+		echo -e "\e[1m$dir\e[0m: \e[93mnot a git repository\e[0m"
+	fi
 	cd - >/dev/null
-	echo ""
+	I=$(($I+1))
 done
