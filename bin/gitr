@@ -6,7 +6,7 @@ DIRECTORIES=$(ls -1)
 
 if [ $# -lt 1 ] ; then
 	echo "Usage: gitr <command>"
-	echo "Supported commands : status,pull"
+	echo "Supported commands : status,pull,push"
 	exit 0
 fi
 
@@ -23,6 +23,9 @@ case "$CMD" in
 	;;
 "pull")
 	COMMAND="pull"
+	;;
+"push")
+	COMMAND="push"
 	;;
 *)
 	echo "Git command not supported"
