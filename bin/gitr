@@ -27,6 +27,9 @@ case "$CMD" in
 "push")
 	COMMAND="push"
 	;;
+"log")
+	COMMAND="log -n1"
+	;;
 *)
 	echo "Git command not supported"
 	exit 0
