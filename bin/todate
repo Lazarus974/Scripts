@@ -2,7 +2,7 @@
 <?php
 
 if($_SERVER['argc'] < 2)
-	die("Usage : unserialize '<serialized string>'\n");
+	die("Usage : todate <timestamp>\n");
 
 $arg = $_SERVER['argv'][1];
 
@@ -11,5 +11,6 @@ if(file_exists($arg))
 else
 	$content = $arg;
 
-$serial = unserialize($content);
-var_dump($serial);
+$serial = date("r", $content);
+
+echo "$serial\n";

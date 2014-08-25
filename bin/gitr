@@ -30,6 +30,9 @@ case "$CMD" in
 "log")
 	COMMAND="log -n1"
 	;;
+"info")
+	COMMAND="remote -v"
+	;;
 *)
 	echo "Git command not supported"
 	exit 0
