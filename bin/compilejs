@@ -3,15 +3,20 @@
 COMMAND=$(which uglifyjs)
 CRC32=$(which crc32)
 FILES=""
+NODE=$(which node)
 
 (($# < 1)) && echo "Usage : compilejs file1 [file2 [file3 ...]]" && exit 0
 
-if [ ! -x $CRC32 ] ; then
+if [ ! -x "$CRC32" ] ; then
 	echo "Command crc32 not found" && exit 1
 fi
 
-if [ ! -x $COMMAND ] ; then
+if [ ! -x "$COMMAND" ] ; then
 	echo "Command uglify not found" && exit 2
+fi
+
+if [ ! -x "$NODE" ] ; then
+	echo "Command node not found" && exit 2
 fi
 
 declare -A CRC
