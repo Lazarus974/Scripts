@@ -40,17 +40,25 @@ esac
 
 # Executing command recursively
 I=0
+NOGIT=""
 for dir in $DIRECTORIES ; do
+	cd $dir
+	if [ -d ".git" ] ; then
+		if [[ $I -gt 0 ]] ; then
+			echo -e "\n\e[1m--------------------------------------------------\e[0m"
+		fi
+		echo -e "\e[1m$dir\e[0m: \e[92mgit $COMMAND\e[0m"
+		git $COMMAND
+		I=$(($I+1))
+	else
+		NOGIT="$NOGIT $dir"
+	fi
+	cd - >/dev/null
+done
+
+if [ "$NOGIT" != "" ] ; then
 	if [[ $I -gt 0 ]] ; then
 		echo -e "\n\e[1m--------------------------------------------------\e[0m"
 	fi
-	cd $dir
-	if [ -d ".git" ] ; then
-		echo -e "\e[1m$dir\e[0m: \e[92mgit $COMMAND\e[0m"
-		git $COMMAND
-	else
-		echo -e "\e[1m$dir\e[0m: \e[93mnot a git repository\e[0m"
-	fi
-	cd - >/dev/null
-	I=$(($I+1))
-done
+	echo -e "\e[1mNot git repository\e[0m: \e[93m$NOGIT\e[0m"
+fi
