@@ -11,6 +11,7 @@ if(file_exists($arg))
 else
 	$content = $arg;
 
+#date_default_timezone_set("UTC");
 $serial = date("r", $content);
 
 echo "$serial\n";

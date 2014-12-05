@@ -2,7 +2,7 @@
 
 COMMAND=""
 CMD=$1
-DIRECTORIES=$(ls -1)
+DIRECTORIES=$(ls -1d */)
 
 if [ $# -lt 1 ] ; then
 	echo "Usage: gitr <command>"
