@@ -33,6 +33,12 @@ case "$CMD" in
 "info")
 	COMMAND="remote -v"
 	;;
+"dev")
+	COMMAND="checkout dev"
+	;;
+"master")
+	COMMAND="checkout master"
+	;;
 *)
 	echo "Git command not supported"
 	exit 0
