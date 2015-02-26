@@ -6,7 +6,7 @@ DIRECTORIES=$(ls -1d */)
 GIT=$(which git)
 
 if [ ! -x $GIT ] ; then
-	echo "$GIT not found"
+	echo "Git command not found"
 	exit 1
 fi
 
