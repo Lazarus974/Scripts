@@ -3,11 +3,17 @@
 COMMAND=""
 CMD=$1
 DIRECTORIES=$(ls -1d */)
+GIT=$(which git)
+
+if [ ! -x $GIT ] ; then
+	echo "$GIT not found"
+	exit 1
+fi
 
 if [ $# -lt 1 ] ; then
 	echo "Usage: gitr <command>"
 	echo "Supported commands : status,pull,push"
-	exit 0
+	exit 2
 fi
 
 shift
@@ -54,7 +60,7 @@ for dir in $DIRECTORIES ; do
 			echo -e "\n\e[1m--------------------------------------------------\e[0m"
 		fi
 		echo -e "\e[1m$dir\e[0m: \e[92mgit $COMMAND\e[0m"
-		git $COMMAND
+		$GIT $COMMAND
 		I=$(($I+1))
 	else
 		NOGIT="$NOGIT $dir"
