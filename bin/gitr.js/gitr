@@ -1,0 +1,53 @@
+#!/opt/node/bin/node
+
+const { exec } = require('child_process');
+
+var command = process.argv.pop();
+var results = {};
+var total = 0, done = 0;
+
+exec('find . -name ".git"', function(error, stdout, stderr) {
+	if(error) {
+		console.error(`exec error: ${error}`);
+		return;
+	}
+	let dirs = stdout.split("\n");
+	
+	total = dirs.length;
+	for(let k in dirs) {
+		let dir = dirs[k];
+		if(dir) {
+			(function(d) { git(get_dir(d), command); })(dir);
+		}
+		else {
+			total--;
+		}
+	}
+});
+
+function get_dir(dir) {
+	let d = dir.split("/");
+	d.pop();
+	return d.join("/");
+}
+
+function git(dir, command) {
+	exec('git -C ' + dir + ' ' + command, function(error, stdout, stderr) {
+		if(error) {
+			console.error(error);
+			return;
+		}
+		results[dir] = stdout;
+		done++;
+		if(done >= total) {
+			print(results);
+		}
+	});
+}
+
+function print(data) {
+	for(let k in data) {
+		console.log(" --- git " + command + " " + k);
+		console.log(data[k]);
+	}
+}
