@@ -1,16 +1,21 @@
 #!/usr/bin/php
 <?php
 
-if(PHP_SAPI != "cli")
+if(PHP_SAPI != "cli") {
 	die(nl2br("This script should be ran in CLI.\n"));
+}
 
 $length = $argc > 1 ? (int) $argv[1] : 8;
 $quite = $argc > 2;
 
-function generate($count = 8) {
+
+$pool = "abccdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$@.,;!:/?0123456789";
+
+function generate($count = 8, $pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") {
 	$res = "";
 	for($i = 0; $i < $count; $i++) {
-		$randchar = rand(0x16, 0x53);
+		$res .= $pool[rand(0, strlen($pool) - 1)];
+/*		$randchar = rand(0x16, 0x53);
 		if($randchar > 0x39)
 			$randchar = chr($randchar + 7);
 		elseif($randchar < 0x30)
@@ -18,8 +23,11 @@ function generate($count = 8) {
 		else
 			$randchar = chr($randchar);
 		$res .= $randchar;
+*/
 	}
 	return $res;
 }
 
-echo $quite ? generate($length) : "Generated password: ".generate($length)."\n";
+$password = generate($length, $pool);
+
+echo $quite ? $password : "Generated password: $password\n";
